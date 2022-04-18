@@ -1,0 +1,49 @@
+Exercise-01
+x = -3*pi: pi/20: 3*pi
+y = sin(x) + sin(2*x) + sin(3*x) + sin(4*x)
+
+(a) Write the x and y values in an excel file.
+x_y = [x;y]
+
+figure; 
+plot(x,y)
+xlabel('value of x') 
+ylabel('value of y') 
+grid on
+
+writematrix(x_y, 'x_y.xls')
+
+(b) Add 15 dB noise to y to obtain y1. Store y1 in an excel file.
+db=15; 
+y1 = awgn(y,db,'measured'); 
+
+figure;
+plot(x,y,'r',x,y1,'-b*') 
+xlabel('value of x')
+ylabel('value of y')
+legend('clean y','noisy y') 
+grid on
+
+(c) Read excels files for y and y1 and determine noise, n.
+m = readmatrix('x_y.xls')
+
+x = x_y(:,1)
+y = x_y(:,2)
+
+n = y1-y
+
+(d) Plot x versus y, y1 and n in the same graph and use legend command to show them separately.
+clc;close all;
+x = -3*pi: pi/20: 3*pi;
+y = sin(x) + sin(2*x) + sin(3*x) + sin(4*x);
+y1 = awgn(y,db,'measured');
+n = y1-y;
+
+plot(x,y,'r',x,y1,'-bo',x,n,'-ks') 
+xlabel('value of x')
+ylabel('value of y')
+legend('clean y','noisy y','noise') 
+grid on
+
+(e) Find the measured SNR added to y by using the excels files for y and y1.
+SNR = (snr(y,y1))

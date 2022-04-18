@@ -1,0 +1,88 @@
+Example-1: For this, try the following code:
+clc;close all;
+x=0:0.01:5; 
+y=2*x.^2+3*x+4;             % x and y data
+db=30; 
+yo=awgn(y,db,'measured');   % noisy data
+Q.1:     (i) What are the model parameters?
+ap=polyfit(x,yo,2)          % model parameters for n=2
+            (ii) What is the MSE?
+yp=polyval(ap,x);           % fitted data
+MSEp=mean((yo-yp).^2)       % MSE
+
+Example-2: Now try the  following code which is simply followed by the code in example-1.
+clc;close all;
+x=0:0.01:5; 
+y=2*x.^2+3*x+4;                     % x and y data
+db=30; 
+yo=awgn(y,db,'measured');           % noisy data
+
+%%%% polyfit %%%%%
+ap=polyfit(x,yo,2);                 % model parameters for n=2
+yp=polyval(ap,x);                   % fitted data
+MSEp=mean((yo-yp).^2);              % MSE
+
+%%% lsqcurvefit %%%%%%%
+F = @(a,x)(a(1)*x.^2+a(2)*x+a(3));  % 2nd order polynomial
+ai=[1 1 1];                         % model parameters
+[al] = lsqcurvefit(F,ai,x,yo);      % model parameters
+yl = F(al,x);                         %Fitted data
+MSEl=mean((yo-yl).^2);              % MSE
+
+figure;
+plot(x,yo,'b',x,yp,'r',x,yl,'g')
+xlabel('value of x'); 
+ylabel('value of y');
+legend('observed','polyfitted','lsqfitted');
+grid on
+
+Exercise- 01: A Gaussian distribution function is given by . Let a = 10, b = 50 and c = 10 for 0x100 with a step of 0.1. Add noise to y and produce yo such that SNR = 30 dB.
+    i) Draw a graph to show the ‘yo’ and polyfitted data ‘yp’ versus ‘x’ in a plot for n = 2. What is the MSE?
+clc;close all;
+x = 0 : 0.1: 100;
+a=10;
+b=50;
+c=10;
+n=10;
+y= a* exp(-(x-b).^2/(2*c.^2));
+SNR=30;
+
+y0 = awgn(y, SNR, 'measured')
+ap = polyfit(x, y0, n)
+yp = polyval(ap, x)
+MSE = mean((y0-yp).^2)
+
+figure;
+plot(x, y0, 'r-', x, yp, 'b-', 'LineWidth', 2)
+xlabel('Values of X')
+ylabel('Values of Y')
+legend('Observed', 'Plyfitted')
+
+    v) Fit the data sets using ‘polyfit’ function with different order of n = 1, 2 ….10 and plot a graph to show the variation of MSE with order ‘n’. What is the value of MSE for n=10?
+clc;close all;clear all; 
+x=0:0.1:100; 
+a=10;
+b=50;
+c=10;
+%e=exp(1); 
+i = 0; 
+y=a*exp(-(x-b).^2/(2*c.^2)); 
+SNR=30; 
+for n=1:10 
+    y1=awgn(y,SNR,'measured'); 
+    a=polyfit(x,y1,n); 
+    ym=polyval(a,x); 
+    i=i+1; 
+    MSE(1,i)=mean((y1-ym).^2); 
+end
+
+n=1:1:10; 
+plot(n,MSE,'r','linewidth',2) 
+grid on 
+xlabel('Order of the polynomial') 
+ylabel('MSE(Mean Square Error)') 
+title('Order of the polynomial vs MSE graph') 
+MSE= MSE(1,10)
+
+clc;close all;clear all; 
+n = 1:10

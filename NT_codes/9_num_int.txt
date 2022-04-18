@@ -1,0 +1,71 @@
+Example-01: from 0 to 3: (Trapezoid)
+clear all; close all; clc; 
+x=0:1:3;
+y=x.^2;
+avg_y = y(1:length(x)-1) + diff(y)/2; 
+A = sum(diff(x).*avg_y)
+Example-02: from 0 to 3: (Simpson >> quad)
+clear all; close all; clc; 
+y=@(x) x.^2;
+A=quad(y,0,3)
+Example-03: from 0 to 3: (Lobatto >> quadl)
+clear all; close all; clc; 
+y=@(x) x.^2;
+A=quadl(y,0,3)
+Example-04: from 0 to 3: (MATLAB Function >> integral)
+clear all; close all; clc; 
+y = @(x) x.^2;
+A = integral(y,0,3)
+Example-05: for x = 0 to 3 and y = 1 to 2: (MATLAB Function double integral>> dblquad)
+clear all; close all; clc; 
+z = @(x,y) (x.^2).*y;
+A = dblquad(z,0,3,1,2)
+
+Exercise-01:   
+Find the numerical integration of the function, from 0 to 5 using 
+(a) Trapezoid rule
+clear all; close all; clc; 
+x=0:0.000001:5;
+y=5./(x.^3+2*x.^2-x+3);
+avg_y = y(1:length(x)-1) + diff(y)/2; 
+A = sum(diff(x).*avg_y)
+(b) ‘integral’ MATLAB function
+clear all; close all; clc; 
+y=@(x) 5./(x.^3+2*x.^2-x+3);
+A = integral(y, 0, 5)
+(c) ‘quad’ MATLAB function
+clear all; close all; clc; 
+y=@(x) 5./(x.^3+2*x.^2-x+3);
+A = quad(y, 0, 5)
+and (d) ‘quadl’ MATLAB function
+clear all; close all; clc; 
+y=@(x) 5./(x.^3+2*x.^2-x+3);
+A = quadl(y, 0, 5)
+
+Exercise-02:   
+Find the numerical integration of the function, from 0 to 5 using 
+(a) Trapezoid rule
+clear all; close all; clc; 
+x=1:0.000001:2;
+y=sin(x.^2);
+avg_y = y(1:length(x)-1) + diff(y)/2; 
+A = sum(diff(x).*avg_y)
+(b) ‘integral’ MATLAB function
+clear all; close all; clc; 
+y=@(x) sin(x.^2);
+A = integral(y, 1, 2)
+(c) ‘quad’ MATLAB function
+clear all; close all; clc; 
+y=@(x) sin(x.^2);
+A = quad(y, 1, 2)
+and (d) ‘quadl’ MATLAB function
+clear all; close all; clc; 
+y=@(x) sin(x.^2);
+A = quadl(y, 1, 2)
+
+Example-03: Find the numerical double integral of the following function
+  
+for π ≤ x ≤ 2π and 0 ≤ y ≤ π, using dblquad MATLAB function.
+clear all; close all; clc; 
+z = @(x,y) (x.*cos(y))+(y.*sin(x));
+A = dblquad(z, pi, 2*pi, 0, pi)

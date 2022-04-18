@@ -1,0 +1,48 @@
+E1: Implement the following two matrices A and B in Matlab
+A = [2 3 5 -1; -5 2 -1 2; 1 -4 7 6; 5 2 1 -4];
+B = [3 1 2 -1; -4 -5 5 2; 1 -2 -3 3; 6 3 1 -4];
+
+(a) Find the 3rd row named r3 of M1 where M1 is obtained by adding A and B. Put r3 below.
+M1 = A+B;
+r3 = M1(3,:)
+
+(b) Find the 5th column named c5 of M2 where M2 is obtained by element-by-element multiplication between A and B. Put c5 below.
+M2 = A.*B;
+c4 = M2(:,4) % Here, c5 is not possible.
+
+(c) Find the 4th element in the 2nd column named e42 of M3 where M3 is obtained by matrix multiplication between A and B. Put e42 below.
+M3 = A*B;
+e42 = M3(4,2)
+
+(d) Determine the inverse of matrix A and put it below.
+inverse_A = inv(A)
+
+(e) Determine the transpose of matrix B and put it below.
+transpose_B = B'
+
+(f) Determine the rank of the matrix A and put it below.
+rank_A = rank(A)
+
+(g) Find the diagonal of matrix B and put it below.
+diagonal_B = diag(B)
+
+E2: Generate a 5×5 one-matrix named N1, a magic matrix N2, and a diagonal matrix N3. Find a matrix E after dividing N1 by N2, Use element-by element division for this purpose. Now, find a matrix F after performing matrix multiplication between N2 and N3. Now find a matrix G by adding matrices E and F. You don’t need to put these results in your report. 
+Now find
+N1 = ones(5); 
+N2 = magic(5);
+N3 = eye(5); % assuming diagonally 1
+E = N1./N2; 
+F = N2*N3; 
+G = E+F;
+
+(a) the determinant d of matrix G and put the result below.
+d = det(G)
+
+(b) Find the 2nd element in the 4th row r24 of G and put the result below.
+r24 = G(4,2)
+
+E3: Write matlab code to generate a 3×3 random matrix and RUN it. RUN the code again. Are the results obtained from these two run same? 
+Justify your answer
+x = rand(3)
+% No, the answers are not same, because rand() function generates random values 
+% for each RUN operation.

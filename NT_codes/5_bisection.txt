@@ -1,0 +1,59 @@
+Exercise-1: Find the root of the function, f(x) = (667.38/x)*(1-exp(-0.1468*x))-40. Guess [xl    xu] = [10    20]. Also draw the plots to validate your results. Use tolerable relative percentage error of 0.001.
+clc; close all; clear all;
+syms x;
+
+% Input Section
+y = input('Enter equation: ');
+a = input('Enter first guess: ');
+b = input('Enter second guess: ');
+e = input('Tolerable error: ');
+
+% Finding Functional Value
+fa = eval(subs(y,x,a));
+fb = eval(subs(y,x,b));
+
+% Implementing Bisection Method
+if fa*fb > 0 
+    disp('Given initial values do not bracket the root.');
+else
+    c = (a+b)/2;
+    fc = eval(subs(y,x,c));
+    i=1;
+    while abs(fc)>e
+        xr_old = c;
+        if fa*fc< 0
+            b =c;
+        else
+            a =c;
+        end
+        c = (a+b)/2;
+        fc = eval(subs(y,x,c));
+        xrnew(i) = c;
+        rel_error(i) = abs((c-xr_old)/c*100);
+        i=i+1;
+    end
+    fprintf('\nRoot is: %f\n', c);
+end
+
+n=1:1:i-1;
+figure;
+plot(n,rel_error,'-bo')
+grid on
+xlabel('number of iteration n')
+ylabel('percentage of relative error')
+
+m=1:1:i;
+xru=[c xrnew];
+f_xru=subs(y,x,xru);
+
+figure;
+plot(m,xru,'-rs')
+xlabel('number of iteration n')
+ylabel('updated xr at each iteration')
+grid on
+
+figure;
+plot(m,f_xru,'-g*')
+xlabel('number of iteration n')
+ylabel('function value for each updated xr')
+grid on

@@ -1,0 +1,149 @@
+Q.1: suppose x values are within the range of 0 <= x <= 10 and y = 2+3x. Determine the model parameters using the above Eq. (1) and Eq. (2). Note that, for example, ∑x is done by sum(x) and x = ∑(xi / n)  is done by mean(x) in Matlab.
+        (i) Paste your code below
+        (ii) What are the model parameters obtained by running your code?
+x = 0:0.5:10;
+y0 = 2+3*x;
+n = 21;
+x_bar = mean(x)
+y_bar = mean(y0)
+a1 = (n*sum(x.*y0) - (sum(x)*sum(y0)))./(n*sum(x.^2)-(sum(x)).^2)
+a0 = y_bar - x_bar.*a1
+
+Q.2: Comment on the curve you obtained after running the code in example-1. What is the value of mean square error (MSE)? Why MSE value is so small?
+clc;close all;
+x=0:0.5:10;
+y0=2*x+3;               % let it gives observed values
+n=1;                    % order used
+a = polyfit(x,y0,n)       % gives model parameters
+ym = polyval(a,x)        % gives the fittd values
+MSE = mean((y0-ym).^2)
+
+figure;
+plot(x,y0,'-bs') 
+hold on 
+plot(x,ym,'-ro') 
+grid on
+legend('observed','modelled')
+
+%comment:
+%The value of MSE is 0 
+%because there is no difference modeled and observed curve.
+
+Q.3: Given that that y = 2+3x for 0  x  10 is a polynomial equation (linear in this case). Produce y0 by adding noise to y such that the SNR = 20dB. Now use the same procedures of Example-1 to fit y0
+        (i) Plot the observed data yo and modeled data ym in the same plot and paste the plot below.
+clc;close all;
+x = 0:0.2:10;
+y = 2+3*x;                  % given polynomial equation
+n = 1;                      % order used
+dB = 20;
+y0 = awgn(y,dB,'measured');
+a = polyfit(x,y0,n)         % gives model parameters
+ym = polyval(a,x);          % gives the fitted values
+
+figure;
+plot(x,y0,'-rs')
+hold on
+plot(x,ym,'-bo')
+grid on
+legend('observed data','modelled data')
+
+        (ii) What are the model parameters now?
+        (iii) What is the value of MSE now?
+clc;close all;
+x = 0:0.2:10;
+y = 2+3*x;      % given polynomial equation
+n = 1;          % order used
+
+dB = 20;
+y0 = awgn(y,dB,'measured');
+a = polyfit(x,y0,n); % gives model parameters
+ym = polyval(a,x); % gives the fitted values
+MSE = mean((y0-ym).^2) % gives mean square error
+
+        (iv) List the model parameters for SNR of 25, 30 and 35 dB and comment on the values of the parameters.
+clc;close all;
+x = 0:0.2:10;
+y = 2+3*x;                      % given polynomial equation
+n = 1;                          % order used
+
+
+for dB = 20:5:35
+    y0 = awgn(y,dB,'measured');
+    a = polyfit(x,y0,n)         % gives model parameters
+    
+    ym = polyval(a,x);          % gives the fitted values
+    MSE = mean((y0-ym).^2)      % gives mean square error
+end
+
+        (v) Run the code for SNR from 20 to 30 dB with 1 dB step each time and store the MSE in an excel file. Draw a curve to show the plot of SNR (dB) versus MSE.
+clc;close all;
+x = 0:0.2:10;
+y = 2+3*x;                      % given polynomial equation
+n = 1;                          % order used
+d = 20;
+for i = 1:11
+    y0 = awgn(y,d,'measured');
+    a = polyfit(x,y0,n);        % gives model parameters
+    ym = polyval(a,x);          % gives the fitted values
+    c = mean((y0-ym).^2);       % gives mean square error
+    MSE(i) = c;
+    dB(i) = d;
+    d = d+1;
+end
+data = [dB;MSE]
+
+writematrix(data, "MSE.xlsx")
+figure;
+plot(dB,MSE,'-rs')
+xlabel('SNR(dB)')
+ylabel('MSE')
+grid on
+
+Q.4: For 0 <= x <= 1 with an increment of 0.02, given that
+y = 10x^10 + 9x^9+ 8x^8+ 7x^7+ 6x^6+ 5x^5+ 4x^4+ 3x^3+ 2x^2+ x + 10
+        (i) fit the data y with 10th order ( n= 10) polynomial and find the model parameters and MSE. Comment on your results.
+clc;close all;
+x = 0:0.02:1;
+y = 10*x.^10+9*x.^9+8*x.^8+7*x.^7+6*x.^6+5*x.^5+4*x.^4+3*x.^3+2*x.^2+x+10; 
+% givenpolynomial equation
+n = 10;                 % order used
+a = polyfit(x,y,n)      % gives model parameters
+ym = polyval(a,x);      % gives the fitted values
+MSE = mean((y-ym).^2)   % gives mean square error
+
+        (ii) Now, Produce yo by adding noise to y such that the SNR = 20dB. Now use the same procedures of Example-1 to fit yo. What is the value of MSE for n =1 (i.e., first order polynomial)?
+clc;close all;
+x = 0:0.02:1;
+y = 10*x.^10+9*x.^9+8*x.^8+7*x.^7+6*x.^6+5*x.^5+4*x.^4+3*x.^3+2*x.^2+x+10; 
+% given polynomial equation
+n = 1;                      % order used
+dB = 40;
+y0 = awgn(y,dB,'measured');
+a = polyfit(x,y0,n)         % gives model parameters
+
+ym = polyval(a,x);          % gives the fitted values
+MSE = mean((y0-ym).^2)      % gives mean square error
+
+        (iii) Vary the order n of the polynomial from 1 to 10 and record your result in an excel file. Draw a plot to show a graph of order (n) versus MSE.
+clc;close all;
+x = 0:0.02:1;
+y = 10*x.^10+9*x.^9+8*x.^8+7*x.^7+6*x.^6+5*x.^5+4*x.^4+3*x.^3+2*x.^2+x+10; 
+% given polynomial equation
+dB = 40;
+y0 = awgn(y,dB,'measured');
+for i = 1:1:10
+    a = polyfit(x,y0,i);    % gives model parameters
+    ym = polyval(a,x);      % gives the fitted values
+    m = mean((y0-ym).^2);   % gives mean square error
+    MSE(i) = m;
+    n(i) = i;
+end
+data = [n;MSE]'
+
+writematrix(data, "MSE1.xlsx")
+
+figure;
+plot(n,MSE,'-rs')
+xlabel('order(n)')
+ylabel('MSE')
+grid on
